@@ -9,6 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import br.com.api.service.ContaService;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -30,14 +31,14 @@ public class ContaController {
             produces={MediaType.APPLICATION_JSON_VALUE})
     @ApiOperation(value="Insere operação a conta.", produces="application/json")
 
-    public void addTransacao(
+    public Conta addTransacao(
             @ApiParam(name="idConta", required=true, value="ID de conta", example="1")
             @PathVariable Long idConta,
             @ApiParam(name="request", required=true, value="Objeto com as reservas a serem criadas/atualizadas")
-            @RequestBody TransacaoDto request
+            @Valid @RequestBody TransacaoDto request
             ){
 
-            contaService.save(request,idConta);
+            return contaService.save(request,idConta);
 
     }
 

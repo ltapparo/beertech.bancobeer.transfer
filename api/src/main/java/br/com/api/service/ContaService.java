@@ -12,9 +12,6 @@ import java.util.List;
 @Service
 public class ContaService {
 
-    //@Autowired
-    //ContaRepository br.com.api.repository;
-
     ContaRepository contaRepository;
 
     @Autowired
@@ -36,7 +33,7 @@ public class ContaService {
         return conta.getSaldo();
     }
 
-    public void save(TransacaoDto request, Long idConta) {
+    public Conta save(TransacaoDto request, Long idConta) {
 
         Conta conta = contaRepository.findById(idConta).orElseThrow(() -> new RuntimeException("Not Found"));
 
@@ -44,7 +41,10 @@ public class ContaService {
 
         Transacao.Operacao operacao = Transacao.Operacao.valueOf(request.getOperacao().toUpperCase());
 
-        if(operacao == Transacao.Operacao.SAQUE) conta.saque(valor);
+        if(operacao == Transacao.Operacao.SAQUE) {
+            if (conta.getSaldo() < valor) throw new RuntimeException("Saldo insuficiente");
+            conta.saque(valor);
+        }
 
         if (operacao == Transacao.Operacao.DEPOSITO) conta.deposito(valor);
 
@@ -57,10 +57,6 @@ public class ContaService {
                 .build();
 
         conta.getTransacao().add(transacao);
-        conta.setSaldo(conta.getSaldo() + valor);
-
-        contaRepository.save(conta);
-
-
+        return contaRepository.save(conta);
     }
 }

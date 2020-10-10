@@ -1,10 +1,9 @@
 package br.com.api.model;
 
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import org.springframework.data.annotation.Id;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -12,11 +11,12 @@ import java.time.LocalDateTime;
 
 @Entity
 @Data
-@AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class Transacao implements Serializable {
 
     public enum Operacao{DEPOSITO,SAQUE}
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -34,5 +34,11 @@ public class Transacao implements Serializable {
     @JoinColumn(name = "conta_id" )
     private Conta conta;
 
-
+    public Transacao(Long id, double valor, Operacao operacao, LocalDateTime dataOperacao, Conta conta) {
+        this.id = id;
+        this.valor = valor;
+        this.operacao = operacao;
+        this.dataOperacao = dataOperacao;
+        this.conta = conta;
+    }
 }
