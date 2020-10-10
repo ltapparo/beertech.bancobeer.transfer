@@ -11,10 +11,15 @@ import org.springframework.web.client.RestTemplate;
 @Component
 public class OperacaoListener {
 
+  private final RestTemplate restTemplate;
+
+  @Autowired
+  public OperacaoListener(RestTemplate restTemplate) {
+    this.restTemplate = restTemplate;
+  }
 
   @RabbitListener(queues = "operacao",containerFactory = "simpleContainerFactory")
   public void receive(@Payload OperacaoMessage operacaoMessage){
-    RestTemplate restTemplate = new RestTemplate();
     System.out.println("enviando requisição para conta:" + operacaoMessage.getConta());
     TransacaoDto transacaoDto = new TransacaoDto(operacaoMessage.getOperacao(),operacaoMessage.getValor());
     try{
