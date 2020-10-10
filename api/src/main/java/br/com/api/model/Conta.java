@@ -25,7 +25,7 @@ public class Conta implements Serializable {
     @Min(value = 0)
     private Double saldo;
 
-    @OneToMany(mappedBy =  "conta")
+    @OneToMany(mappedBy =  "conta", fetch = FetchType.EAGER)
     @JsonIgnore
     private List<Transacao> transacao;
 

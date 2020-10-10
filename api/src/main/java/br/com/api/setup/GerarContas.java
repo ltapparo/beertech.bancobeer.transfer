@@ -16,9 +16,9 @@ public class GerarContas {
         this.contaRepository = contaRepository;
     }
 
-    public void criar() {
+    public Conta criar() {
         Conta conta = new Conta();
         conta.setSaldo(1000d);
-        contaRepository.save(conta);
+        return contaRepository.save(conta);
     }
 }
