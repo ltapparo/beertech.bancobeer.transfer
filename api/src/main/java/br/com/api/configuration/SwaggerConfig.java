@@ -27,9 +27,9 @@ public class SwaggerConfig {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("DUPLO MALTE API")
+                .title("Duplo Malte API")
                 .version("1.0")
-                .contact(new Contact("DUPLO MALTE", "https://github.com/ggoldjr/beertech.bancobeer", ""))
+                .contact(new Contact("Duplo Malte", "https://github.com/ggoldjr/beertech.bancobeer", ""))
                 .build();
     }
 }
