@@ -27,9 +27,9 @@ public class SwaggerConfig {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("Track ASD API")
+                .title("Duplo Malte API")
                 .version("1.0")
-                .contact(new Contact("Evolve", "evolve.com.br", "evolve@gmail.com"))
+                .contact(new Contact("Duplo Malte", "https://github.com/ggoldjr/beertech.bancobeer", ""))
                 .build();
     }
 }
