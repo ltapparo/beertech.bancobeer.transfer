@@ -1,13 +1,13 @@
-package rest;
+package br.com.api.rest;
 
-import Dto.TransacaoDto;
+import br.com.api.dto.TransacaoDto;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import model.Conta;
+import br.com.api.model.Conta;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import service.ContaService;
+import br.com.api.service.ContaService;
 
 import java.util.List;
 
@@ -32,7 +32,7 @@ public class ContaController {
 
     public void addTransacao(
             @ApiParam(name="idConta", required=true, value="ID de conta", example="1")
-            @PathVariable String idConta,
+            @PathVariable Long idConta,
             @ApiParam(name="request", required=true, value="Objeto com as reservas a serem criadas/atualizadas")
             @RequestBody TransacaoDto request
             ){
@@ -46,13 +46,8 @@ public class ContaController {
             consumes={MediaType.APPLICATION_JSON_VALUE},
             produces={MediaType.APPLICATION_JSON_VALUE})
     @ApiOperation(value="Retorna.", produces="application/json")
-    public void getSaldo(
-            @ApiParam(name="idConta", required=true, value="ID de conta", example="1")
-            @PathVariable String idConta
-    ){
-
+    public void getSaldo(@ApiParam(name="idConta", required=true, value="ID de conta", example="1") @PathVariable Long idConta){
         contaService.getSaldo(idConta);
-
     }
 
 }

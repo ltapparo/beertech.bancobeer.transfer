@@ -1,4 +1,4 @@
-package model;
+package br.com.api.model;
 
 
 import lombok.AllArgsConstructor;

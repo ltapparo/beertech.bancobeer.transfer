@@ -1,19 +1,19 @@
-package service;
+package br.com.api.service;
 
-import Dto.TransacaoDto;
-import model.Conta;
-import model.Transacao;
+import br.com.api.dto.TransacaoDto;
+import br.com.api.model.Conta;
+import br.com.api.model.Transacao;
 import org.springframework.beans.factory.annotation.Autowired;
-import repository.ContaRepository;
+import br.com.api.repository.ContaRepository;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
-
+@Service
 public class ContaService {
 
     //@Autowired
-    //ContaRepository repository;
+    //ContaRepository br.com.api.repository;
 
     ContaRepository contaRepository;
 
@@ -26,30 +26,32 @@ public class ContaService {
         return contaRepository.findAll();
     }
 
-    public Conta findById(String idConta) {
+    public Conta findById(Long idConta) {
         return contaRepository.findById(idConta).orElseThrow();
     }
 
-    public Double getSaldo(String idConta) {
+    public Double getSaldo(Long idConta) {
         Conta conta = contaRepository.findById(idConta).orElseThrow(() -> new RuntimeException("Not Found"));
 
         return conta.getSaldo();
     }
 
-    public void save(TransacaoDto request, String idConta) {
+    public void save(TransacaoDto request, Long idConta) {
 
         Conta conta = contaRepository.findById(idConta).orElseThrow(() -> new RuntimeException("Not Found"));
 
         Double valor= request.getValor();
 
-        if(request.getOperacao() ==Transacao.Operacao.SAQUE) ){
-            valor = valor *-1;
-        }
+        Transacao.Operacao operacao = Transacao.Operacao.valueOf(request.getOperacao().toUpperCase());
+
+        if(operacao == Transacao.Operacao.SAQUE) conta.saque(valor);
+
+        if (operacao == Transacao.Operacao.DEPOSITO) conta.deposito(valor);
 
         Transacao transacao= Transacao
                 .builder()
                 .conta(conta)
-                .operacao(request.getOperacao())
+                .operacao(operacao)
                 .valor(request.getValor())
                 .dataOperacao(LocalDateTime.now())
                 .build();

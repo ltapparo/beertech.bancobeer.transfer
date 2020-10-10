@@ -1,4 +1,4 @@
-package Dto;
+package br.com.api.dto;
 
 import lombok.Data;
 
