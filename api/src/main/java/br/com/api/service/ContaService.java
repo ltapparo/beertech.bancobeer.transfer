@@ -3,6 +3,7 @@ package br.com.api.service;
 import br.com.api.dto.TransacaoDto;
 import br.com.api.model.Conta;
 import br.com.api.model.Transacao;
+import br.com.api.repository.TransacaoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import br.com.api.repository.ContaRepository;
 import org.springframework.stereotype.Service;
@@ -12,11 +13,13 @@ import java.util.List;
 @Service
 public class ContaService {
 
-    ContaRepository contaRepository;
+    private final ContaRepository contaRepository;
+    private final TransacaoRepository transacaoRepository;
 
     @Autowired
-    public ContaService(ContaRepository contaRepository) {
+    public ContaService(ContaRepository contaRepository, TransacaoRepository transacaoRepository) {
         this.contaRepository = contaRepository;
+        this.transacaoRepository = transacaoRepository;
     }
 
     public List<Conta> listAll() {
@@ -57,6 +60,7 @@ public class ContaService {
                 .build();
 
         conta.getTransacao().add(transacao);
+        transacaoRepository.save(transacao);
         return contaRepository.save(conta);
     }
 }
