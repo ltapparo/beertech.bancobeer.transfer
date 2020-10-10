@@ -41,6 +41,11 @@ public class RabbitConfig {
     return new TopicExchange("operacao.exchange",true,false);
   }
 
+  @Bean
+  public TopicExchange operacaoDlqTopicExchange(){
+    return new TopicExchange("operacao.exchange-dlq",true,false);
+  }
+
 
   @Bean
   public Declarables declarablesBean(){
