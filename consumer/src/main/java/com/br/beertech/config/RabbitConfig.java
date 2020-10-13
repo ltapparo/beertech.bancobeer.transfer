@@ -49,18 +49,33 @@ public class RabbitConfig {
 
   @Bean
   public Declarables declarablesBean(){
-    List<Declarable> declarables = new ArrayList<>();
+    List<Declarable> declarables = createOperacaoQueueDeclarables();
+    declarables.addAll(createTransferenciaQueueDeclarables());
 
+    return new Declarables(declarables);
+  }
+
+  private List<Declarable> createOperacaoQueueDeclarables() {
+    List<Declarable> declarables = new ArrayList<>();
 
     Queue operacaoQueue = QueueBuilder.durable("operacao").build();
     Binding operacaoBinding = BindingBuilder.bind(operacaoQueue).to(operacaoTopicExchange()).with(".");
 
     declarables.add(operacaoQueue);
     declarables.add(operacaoBinding);
-
-    return new Declarables(declarables);
+    return declarables;
   }
 
+  private List<Declarable> createTransferenciaQueueDeclarables() {
+    List<Declarable> declarables = new ArrayList<>();
+
+    Queue transferenciaQueue = QueueBuilder.durable("transferencia").build();
+    Binding transferenciaBinding = BindingBuilder.bind(transferenciaQueue).to(operacaoTopicExchange()).with(".");
+
+    declarables.add(transferenciaQueue);
+    declarables.add(transferenciaBinding);
+    return declarables;
+  }
   @Bean
   AmqpAdmin admin(@Qualifier("bancoConnectionFactory") final ConnectionFactory connectionFactory) {
 
