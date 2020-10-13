@@ -1,7 +1,9 @@
 package br.com.api.configuration;
 
+import java.util.Set;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
@@ -22,6 +24,8 @@ public class SwaggerConfig {
                 .apis(RequestHandlerSelectors.withClassAnnotation(RestController.class))
                 .paths(PathSelectors.any())
                 .build()
+                .consumes(Set.of(MediaType.APPLICATION_JSON_VALUE))
+                .produces(Set.of(MediaType.APPLICATION_JSON_VALUE))
                 .apiInfo(apiInfo());
     }
 

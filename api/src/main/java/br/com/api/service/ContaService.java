@@ -1,8 +1,10 @@
 package br.com.api.service;
 
 import br.com.api.dto.TransacaoDto;
+import br.com.api.dto.TransferenciaDto;
 import br.com.api.model.Conta;
 import br.com.api.model.Transacao;
+import br.com.api.model.Transacao.Operacao;
 import br.com.api.repository.TransacaoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import br.com.api.repository.ContaRepository;
@@ -26,19 +28,18 @@ public class ContaService {
         return contaRepository.findAll();
     }
 
-    public Conta findById(Long idConta) {
-        return contaRepository.findById(idConta).orElseThrow();
+    public Conta findByHashId(String hashId) {
+        return contaRepository.findByHashId(hashId).orElseThrow();
     }
 
-    public Double getSaldo(Long idConta) {
-        Conta conta = contaRepository.findById(idConta).orElseThrow(() -> new RuntimeException("Not Found"));
-
+    public Double getSaldo(String hashId) {
+        Conta conta = contaRepository.findByHashId(hashId).orElseThrow(() -> new RuntimeException("Not Found"));
         return conta.getSaldo();
     }
 
-    public Conta save(TransacaoDto request, Long idConta) {
+    public Conta saveOperacao(TransacaoDto request, String hashId) {
 
-        Conta conta = contaRepository.findById(idConta).orElseThrow(() -> new RuntimeException("Not Found"));
+        Conta conta = contaRepository.findByHashId(hashId).orElseThrow(() -> new RuntimeException("Not Found"));
 
         Double valor= request.getValor();
 
@@ -62,5 +63,15 @@ public class ContaService {
         conta.getTransacao().add(transacao);
         transacaoRepository.save(transacao);
         return contaRepository.save(conta);
+    }
+
+    public Conta saveTransferencia(TransferenciaDto request, String hashId) {
+        try{
+            Conta conta = saveOperacao(new TransacaoDto(Operacao.SAQUE.name(),request.getValor()),hashId);
+            saveOperacao(new TransacaoDto(Operacao.DEPOSITO.name(), request.getValor()),hashId);
+            return  conta;
+        }catch (RuntimeException e){
+            throw new RuntimeException("Erro ao efetuar transferencia");
+        }
     }
 }

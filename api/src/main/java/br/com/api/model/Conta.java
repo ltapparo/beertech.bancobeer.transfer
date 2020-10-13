@@ -11,15 +11,19 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import lombok.ToString;
 
 @Entity
 @Data
 @NoArgsConstructor
+@ToString
 public class Conta implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    private String hashId;
 
     @NotNull
     @Min(value = 0)

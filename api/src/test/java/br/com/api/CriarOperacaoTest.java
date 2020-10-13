@@ -40,13 +40,12 @@ public class CriarOperacaoTest {
         @BeforeEach
         void setup() {
             conta = gerarContas.criar();
-            contaAtualizada = contaService.save(getTransacaoDto(), conta.getId());
+            contaAtualizada = contaService.saveOperacao(getTransacaoDto(), conta.getHashId());
             transacao = transacaoRepository.findByContaId(conta.getId());
         }
 
         protected abstract TransacaoDto getTransacaoDto();
     }
-
 
     @Nested
     public class SacarValorMenorQueSaldo extends SetupDeOperacao {
@@ -91,7 +90,7 @@ public class CriarOperacaoTest {
 
         @Test
         void deveRetornarMensagemDeErro() {
-            assertThrows(RuntimeException.class, ()->{contaService.save(getTransacaoDto(), conta.getId());} );
+            assertThrows(RuntimeException.class, ()->{contaService.saveOperacao(getTransacaoDto(), conta.getHashId());} );
         }
     }
 
@@ -138,7 +137,7 @@ public class CriarOperacaoTest {
 
         @Test
         void deveRetornarMensagemDeErro() {
-            assertThrows(RuntimeException.class, ()->{contaService.save(getTransacaoDto(), conta.getId());} );
+            assertThrows(RuntimeException.class, ()->{contaService.saveOperacao(getTransacaoDto(), conta.getHashId());} );
         }
     }
 }
